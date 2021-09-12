@@ -3,24 +3,24 @@ package com.demo.common;
 public class BusinessException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
-	private String code;
+	private int code;
 	private String message;
 
 	public BusinessException() {
 		super();
 	}
 
-	public BusinessException(String code, String message) {
+	public BusinessException(int code, String message) {
 		super(message);
 		this.code = code;
 		this.message = message;
 	}
 
-	public String getCode() {
+	public int getCode() {
 		return code;
 	}
 
-	public void setCode(String code) {
+	public void setCode(int code) {
 		this.code = code;
 	}
 

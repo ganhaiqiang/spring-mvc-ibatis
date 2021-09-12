@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.demo.common.PageInfo;
 import com.demo.dao.StudentDAO;
 import com.demo.model.Student;
 import com.demo.model.StudentExample;
@@ -68,5 +69,12 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public int updateByPrimaryKey(Student record) {
 		return studentDAO.updateByPrimaryKey(record);
+	}
+
+	@Override
+	public PageInfo<Student> selectPageByExample(StudentExample example) {
+		List<Student> rows = selectByExample(example);
+		int total = countByExample(example);
+		return new PageInfo<Student>(total, rows);
 	}
 }

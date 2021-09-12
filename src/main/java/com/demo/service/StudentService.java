@@ -2,6 +2,7 @@ package com.demo.service;
 
 import java.util.List;
 
+import com.demo.common.PageInfo;
 import com.demo.model.Student;
 import com.demo.model.StudentExample;
 
@@ -17,6 +18,8 @@ public interface StudentService {
 	void insertSelective(Student record);
 
 	List<Student> selectByExample(StudentExample example);
+
+	PageInfo<Student> selectPageByExample(StudentExample example);
 
 	Student selectByPrimaryKey(Integer id);
 
