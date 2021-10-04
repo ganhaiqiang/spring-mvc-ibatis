@@ -36,6 +36,9 @@ $(function() {
 		singleSelect : false,// 单行选择单行,设置为true将禁止多选
 		clickToSelect : true, // 点击选中行
 		showToggle : true, // 是否显示详细视图和列表视图的切换按钮
+		showExport : true, // 是否显示导出按钮
+		exportDataType: "all", //basic', 'all', 'selected'.
+		exportTypes:[ 'json', 'xml', 'png', 'csv', 'txt', 'sql', 'doc', 'excel', 'powerpoint', 'pdf'], //导出类型
 		cardView : false, // 是否显示详细视图
 		detailView : false, // 是否显示父子表
 		sidePagination : "server",
@@ -81,7 +84,35 @@ $(function() {
 			field : 'age',
 			title : '年龄',
 			valign : 'middle',
-			sortable : true
+			sortable : true,
+			editable : {
+				type : 'number',
+				clear : false,
+				validate : function(value) {
+					if (isNaN(value))
+						return {
+							newValue : 0,
+							msg : '只允许输入数字'
+						};
+					else if (value <= 0)
+						return {
+							newValue : 0,
+							msg : '年龄不能小于等于0'
+						};
+					else if (value >= 100)
+						return {
+							newValue : 0,
+							msg : '当前最大只能输入99'
+						};
+				},
+				display : function(value) {
+					$(this).text(Number(value));
+				},
+				// onblur:'ignore',
+				showbuttons : false,
+				defaultValue : 0,
+				mode : 'inline'
+			}
 		}, {
 			field : 'address',
 			title : '地址',
