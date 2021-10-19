@@ -11,7 +11,8 @@
         http://www.springframework.org/schema/tx  
         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd  
       http://www.springframework.org/schema/aop  
-      http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+      http://www.springframework.org/schema/aop/spring-aop-3.0.xsd" 
+      default-autowire="byName">
 
 	<!-- 自动扫描 -->
 	<context:component-scan base-package="com.demo" />
@@ -32,10 +33,10 @@
 
 	<!-- 配置数据源 -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=utf-8" />
-		<property name="username" value="root" />
-		<property name="password" value="root" />
+		<property name="driverClassName" value="${driver}" />
+		<property name="url" value="${url}" />
+		<property name="username" value="${username}" />
+		<property name="password" value="${password}" />
 	</bean>
 
 	<!-- 配置SqlMapClient对象 -->
@@ -84,4 +85,6 @@
 		<aop:pointcut id="transactionPointcut" expression="execution(* com.demo.service..*ServiceImpl.*(..))" />
 		<aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />
 	</aop:config>
+	
+	<import resource="cxf-spring.xml"/>
 </beans>

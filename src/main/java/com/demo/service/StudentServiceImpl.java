@@ -1,5 +1,6 @@
 package com.demo.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,11 @@ import com.demo.dao.StudentDAO;
 import com.demo.model.Student;
 import com.demo.model.StudentExample;
 
+/**
+ * 通用 ServiceImpl 代码生成器
+ *
+ * @author mapper-generator
+ */
 @Service
 public class StudentServiceImpl implements StudentService {
 
@@ -27,18 +33,18 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public int deleteByPrimaryKey(Integer id) {
+	public int deleteByPrimaryKey(BigDecimal id) {
 		return studentDAO.deleteByPrimaryKey(id);
 	}
 
 	@Override
-	public void insert(Student record) {
-		studentDAO.insert(record);
+	public BigDecimal insert(Student record) {
+		return studentDAO.insert(record);
 	}
 
 	@Override
-	public void insertSelective(Student record) {
-		studentDAO.insertSelective(record);
+	public BigDecimal insertSelective(Student record) {
+		return studentDAO.insertSelective(record);
 	}
 
 	@Override
@@ -47,7 +53,7 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public Student selectByPrimaryKey(Integer id) {
+	public Student selectByPrimaryKey(BigDecimal id) {
 		return studentDAO.selectByPrimaryKey(id);
 	}
 
@@ -73,8 +79,8 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public PageInfo<Student> selectPageByExample(StudentExample example) {
-		List<Student> rows = selectByExample(example);
-		int total = countByExample(example);
-		return new PageInfo<Student>(total, rows);
+		List<Student> list = this.selectByExample(example);
+		int rows = this.countByExample(example);
+		return new PageInfo<Student>(rows, list);
 	}
 }

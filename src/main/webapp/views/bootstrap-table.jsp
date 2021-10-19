@@ -8,9 +8,13 @@
 <link href="static/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" media="screen">
 <link href="static/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" media="screen">
 <link href="static/bootstrap-select-1.13.14/css/bootstrap-select.min.css" rel="stylesheet" media="screen">
+<link href="static/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" media="screen">
+
 <script src="static/js/jquery-1.11.1.min.js"></script>
 <script src="static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <script src="static/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="static/bootstrap3-editable/js/bootstrap-editable.js"></script>
+<script src="static/bootstrap3-editable/js/bootstrap-table-editable.min.js"></script>
 <script src="static/bootstrapValidator/dist/js/bootstrapValidator.min.js"></script>
 <script src="static/bootstrapValidator/dist/js/language/zh_CN.js"></script>
 <script src="static/bootstrap-select-1.13.14/js/bootstrap-select.min.js"></script>

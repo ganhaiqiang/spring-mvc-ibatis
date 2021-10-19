@@ -1,5 +1,9 @@
 package com.demo.controller;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,12 +24,24 @@ public class StudentController {
 	@Autowired
 	private StudentService studentService;
 
+	@RequestMapping("test")
+	@ResponseBody
+	public Object test() {
+		List<BigDecimal> values = new ArrayList<BigDecimal>();
+		for (int i = 0; i < 1001; i++) {
+			values.add(new BigDecimal(i));
+		}
+		StudentExample example = new StudentExample();
+		example.createCriteria().andIdIn(values);
+		return studentService.selectByExample(example);
+	}
+
 	@RequestMapping("list")
 	@ResponseBody
 	public Object getStudent(Integer limit, Integer offset, String sort, String sortOrder, Student student) {
 		StudentExample example = new StudentExample();
-		example.setMysqlLength(limit);
-		example.setMysqlOffset(offset);
+		example.setFirstResult(offset);
+		example.setLastResult(offset + limit);
 		if (StringUtils.isNotBlank(sort) && StringUtils.isNotBlank(sortOrder)) {
 			example.setOrderByClause(sort + " " + sortOrder);
 		}
@@ -39,7 +55,7 @@ public class StudentController {
 		if (StringUtils.isNotBlank(student.getEmail())) {
 			criteria.andEmailLike("%" + student.getEmail() + "%");
 		}
-		if (StringUtils.isNotBlank(student.getSex())) {
+		if (student.getSex() != null) {
 			criteria.andSexEqualTo(student.getSex());
 		}
 		if (student.getAge() != null) {
@@ -65,7 +81,7 @@ public class StudentController {
 
 	@RequestMapping("findById")
 	@ResponseBody
-	public Object findById(Integer id) {
+	public Object findById(BigDecimal id) {
 		Student student = studentService.selectByPrimaryKey(id);
 		return ApiResponse.ok(student);
 	}
@@ -75,7 +91,7 @@ public class StudentController {
 	public Object delete(String ids) {
 		if (StringUtils.isNotBlank(ids)) {
 			for (String id : ids.split(",")) {
-				studentService.deleteByPrimaryKey(Integer.valueOf(id));
+				studentService.deleteByPrimaryKey(new BigDecimal(id));
 			}
 		}
 		return ApiResponse.ok();

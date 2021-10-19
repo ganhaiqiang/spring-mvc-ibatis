@@ -1,117 +1,80 @@
 package com.demo.model;
 
+import com.demo.common.SexEnum;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
 public class Student implements Serializable {
-	private Integer id;
+    private BigDecimal id;
 
-	/**
-	 * 姓名
-	 */
-	private String name;
+    private String name;
 
-	/**
-	 * 性别
-	 */
-	private String sex;
+    private SexEnum sex;
 
-	/**
-	 * 年龄
-	 */
-	private Integer age;
+    private BigDecimal age;
 
-	/**
-	 * 家庭住址
-	 */
-	private String address;
+    private String address;
 
-	@JSONField(format = "yyyy-MM-dd")
-	private Date birthday;
+    private Date birthday;
 
-	private String email;
+    private String email;
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public Integer getId() {
-		return id;
-	}
+    public BigDecimal getId() {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(BigDecimal id) {
+        this.id = id;
+    }
 
-	/**
-	 * 获取 姓名
-	 */
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * 设置 姓名
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/**
-	 * 获取 性别
-	 */
-	public String getSex() {
-		return sex;
-	}
+    public SexEnum getSex() {
+        return sex;
+    }
 
-	/**
-	 * 设置 性别
-	 */
-	public void setSex(String sex) {
-		this.sex = sex;
-	}
+    public void setSex(SexEnum sex) {
+        this.sex = sex;
+    }
 
-	/**
-	 * 获取 年龄
-	 */
-	public Integer getAge() {
-		return age;
-	}
+    public BigDecimal getAge() {
+        return age;
+    }
 
-	/**
-	 * 设置 年龄
-	 */
-	public void setAge(Integer age) {
-		this.age = age;
-	}
+    public void setAge(BigDecimal age) {
+        this.age = age;
+    }
 
-	/**
-	 * 获取 家庭住址
-	 */
-	public String getAddress() {
-		return address;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	/**
-	 * 设置 家庭住址
-	 */
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public Date getBirthday() {
-		return birthday;
-	}
+    public Date getBirthday() {
+        return birthday;
+    }
 
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

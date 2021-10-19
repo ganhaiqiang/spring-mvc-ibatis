@@ -2,6 +2,7 @@ package com.demo.dao;
 
 import com.demo.model.Student;
 import com.demo.model.StudentExample;
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface StudentDAO {
@@ -9,15 +10,15 @@ public interface StudentDAO {
 
     int deleteByExample(StudentExample example);
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(BigDecimal id);
 
-    void insert(Student record);
+    BigDecimal insert(Student record);
 
-    void insertSelective(Student record);
+    BigDecimal insertSelective(Student record);
 
     List<Student> selectByExample(StudentExample example);
 
-    Student selectByPrimaryKey(Integer id);
+    Student selectByPrimaryKey(BigDecimal id);
 
     int updateByExampleSelective(Student record, StudentExample example);
 
