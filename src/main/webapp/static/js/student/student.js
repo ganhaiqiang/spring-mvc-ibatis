@@ -20,33 +20,37 @@ $.fn.serializeObject = function() {
 $(function() {
 
 	$("#studentTb").bootstrapTable('destroy').bootstrapTable({
-		url: '/student/list',
-		method: 'POST',
-		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-		uniqueId: 'id', // 绑定ID，不显示
-		toolbar: '#toolbar', // 工具按钮用哪个容器
-		striped: true, // 是否显示行间隔色
-		cache: false, // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-		sortable: true, // 是否启用排序
-		sortOrder: "asc", // 排序方式
-		undefinedText: '--',
-		showRefresh: true, // 显示刷新按钮
-		showColumns: true, // 选择显示的列
-		search: false,
-		singleSelect: false,// 单行选择单行,设置为true将禁止多选
-		clickToSelect: true, // 点击选中行
-		showToggle: true, // 是否显示详细视图和列表视图的切换按钮
+		url : '/student/list',
+		method : 'POST',
+		contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+		uniqueId : 'id', // 绑定ID，不显示
+		toolbar : '#toolbar', // 工具按钮用哪个容器
+		striped : true, // 是否显示行间隔色
+		cache : false, // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+		sortable : true, // 是否启用排序
+		sortOrder : "asc", // 排序方式
+		undefinedText : '--',
+		showRefresh : true, // 显示刷新按钮
+		showColumns : true, // 选择显示的列
+		search : false,
+		singleSelect : false,// 单行选择单行,设置为true将禁止多选
+		clickToSelect : true, // 点击选中行
+		showToggle : true, // 是否显示详细视图和列表视图的切换按钮
 		cardView: false, // 是否显示详细视图
-		detailView: false, // 是否显示父子表
-		sidePagination: "server",
-		pagination: true, // 是否显示分页
-		pageNumber: 1, // 初始化加载第一页，默认第一页,并记录
-		pageSize: 5,// 每页显示的数量
-		pageList: [5, 10, 20, 50, 100],// 设置每页显示的数量
-		paginationPreText: "上一页",
-		paginationNextText: "下一页",
-		paginationLoop: false,
-		queryParams: function(params) {
+		showExport : true, // 是否显示导出按钮
+		exportDataType: "all", //basic', 'all', 'selected'.
+		exportTypes:[ 'json', 'xml', 'png', 'csv', 'txt', 'sql', 'doc', 'excel', 'powerpoint', 'pdf'], //导出类型
+		cardView : false, // 是否显示详细视图
+		detailView : false, // 是否显示父子表
+		sidePagination : "server",
+		pagination : true, // 是否显示分页
+		pageNumber : 1, // 初始化加载第一页，默认第一页,并记录
+		pageSize : 5,// 每页显示的数量
+		pageList : [5, 10, 20, 50, 100],// 设置每页显示的数量
+		paginationPreText : "上一页",
+		paginationNextText : "下一页",
+		paginationLoop : false,
+		queryParams : function(params) {
 			var temp = {
 				limit: params.limit, // 页面大小
 				offset: params.offset,// 页码
@@ -78,17 +82,37 @@ $(function() {
 			title: '性别',
 			valign: 'middle'
 		}, {
-			field: 'age',
-			title: '年龄',
-			valign: 'middle',
-			sortable: true,
-			editable: {
-				type: "number",
-				validate: function(v) {
-					if (isNaN(v)) return '年龄必须是数字';
-					var age = parseInt(v);
-					if (age <= 0) return '年龄必须是正整数';
-				}
+			field : 'age',
+			title : '年龄',
+			valign : 'middle',
+			sortable : true,
+			editable : {
+				type : 'number',
+				clear : false,
+				validate : function(value) {
+					if (isNaN(value))
+						return {
+							newValue : 0,
+							msg : '只允许输入数字'
+						};
+					else if (value <= 0)
+						return {
+							newValue : 0,
+							msg : '年龄不能小于等于0'
+						};
+					else if (value >= 100)
+						return {
+							newValue : 0,
+							msg : '当前最大只能输入99'
+						};
+				},
+				display : function(value) {
+					$(this).text(Number(value));
+				},
+				// onblur:'ignore',
+				showbuttons : false,
+				defaultValue : 0,
+				mode : 'inline'
 			}
 		}, {
 			field: 'address',

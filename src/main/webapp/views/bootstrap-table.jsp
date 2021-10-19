@@ -21,6 +21,13 @@
 <script src="static/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
 <script src="static/bootstrap-select-1.13.14/js/i18n/defaults-zh_CN.min.js"></script>
 <script src="static/template/template-web.js"></script>
+<script src="static/tableExport-bootstrap-table-master/tableExport.js"></script>
+<script src="static/sheetjs-master/dist/xlsx.core.min.js"></script>
+<script src="static/sheetjs-master/dist/xlsx.min.js"></script>
+<script src="static/FileSaver.js-master/dist/FileSaver.min.js"></script>
+<script src="static/js/html2canvas.js"></script>
+<script src="static/tableExport-bootstrap-table-master/jspdf.min.js"></script>
+<script src="static/tableExport-bootstrap-table-master/jspdf.plugin.autotable.js"></script>
 <script src="static/layer/layer.js"></script>
 <script src="static/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="static/js/student/student.js">
@@ -48,7 +55,8 @@
 						<input type="text" class="form-control" id="name" name="name" placeholder="请输入姓名">
 
 						<label for="sex"> 性别 </label>
-						<select class="selectpicker" data-live-search="true" id="sex" name="sex" title="请选择性别">
+						<select class="selectpicker" data-live-search="true" id="sex" name="sex" title="请选择性别" >
+							<option value=""></option>
 							<option value="F">男</option>
 							<option value="M">女</option>
 						</select>
@@ -86,6 +94,9 @@
 			</button>
 			<button type="button" class="btn btn-default" id="delBtn">
 				<span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 删除
+			</button>
+			<button type="button" class="btn btn-default" id="exportBtn">
+				<span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 导出
 			</button>
 		</div>
 	</div>
