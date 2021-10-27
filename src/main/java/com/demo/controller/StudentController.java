@@ -1,16 +1,29 @@
 package com.demo.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.demo.common.ApiResponse;
+import com.demo.common.DownloadUtils;
 import com.demo.common.PageInfo;
 import com.demo.model.Student;
 import com.demo.model.StudentExample;
@@ -23,6 +36,23 @@ public class StudentController {
 
 	@Autowired
 	private StudentService studentService;
+
+	@RequestMapping(value = "down", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<byte[]> down(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+		headers.setContentDispositionFormData("attachment", DownloadUtils.processFileName(request, "spring-mvc-ibatis.rar"));
+		try {
+			Thread.sleep(5000);
+			return new ResponseEntity<byte[]>(Files.readAllBytes(new File("D:/spring-mvc-ibatis.rar").toPath()), headers, HttpStatus.OK);
+		} catch (IOException e) {
+			headers.clear();
+			headers.setContentType(MediaType.TEXT_HTML);
+			return new ResponseEntity<byte[]>("文件不存在！可能已被删除或移动。".getBytes("utf-8"), headers, HttpStatus.EXPECTATION_FAILED);
+		}
+	}
 
 	@RequestMapping("test")
 	@ResponseBody
@@ -95,5 +125,23 @@ public class StudentController {
 			}
 		}
 		return ApiResponse.ok();
+	}
+
+	@RequestMapping("insert")
+	@ResponseBody
+	public Object insert() {
+//		Student student = new Student();
+//		student.setAddress("山东威海");
+//		student.setAge(new BigDecimal(32));
+//		student.setBirthday(new Date());
+//		student.setEmail("sd.dff@qq.com");
+//		student.setName("黄思维");
+//		student.setSex(SexEnum.M);
+//		student.setTvIp("192.168.55.2");
+//		System.out.println(studentService.insert(student));
+
+		StudentExample example = new StudentExample();
+		example.createCriteria().andTvIpGreaterThan("192.168.1.22");
+		return ApiResponse.ok(studentService.selectByExample(example));
 	}
 }

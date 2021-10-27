@@ -1,11 +1,10 @@
 package com.demo.test;
 
-import com.demo.dao.StudentDAOImpl;
+import java.math.BigDecimal;
 
 public class Test {
 	public static void main(String[] args) throws ClassNotFoundException {
-		System.out.println(Integer.toHexString(0x21));
-		System.out.println(Integer.toBinaryString(5));
-		System.out.println(Integer.toHexString(10));
+		System.out.println(new BigDecimal(5.0001).stripTrailingZeros().toString());
+		System.out.println(new BigDecimal(5.0001).stripTrailingZeros().toPlainString());
 	}
 }

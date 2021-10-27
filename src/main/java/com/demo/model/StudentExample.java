@@ -101,6 +101,12 @@ public class StudentExample {
 
         protected List<Map<String, Object>> sexCriteriaWithBetweenValue;
 
+        protected List<Map<String, Object>> tvIpCriteriaWithSingleValue;
+
+        protected List<Map<String, Object>> tvIpCriteriaWithListValue;
+
+        protected List<Map<String, Object>> tvIpCriteriaWithBetweenValue;
+
         protected List<String> criteriaWithoutValue;
 
         protected List<Map<String, Object>> criteriaWithSingleValue;
@@ -118,6 +124,9 @@ public class StudentExample {
             sexCriteriaWithSingleValue = new ArrayList<Map<String, Object>>();
             sexCriteriaWithListValue = new ArrayList<Map<String, Object>>();
             sexCriteriaWithBetweenValue = new ArrayList<Map<String, Object>>();
+            tvIpCriteriaWithSingleValue = new ArrayList<Map<String, Object>>();
+            tvIpCriteriaWithListValue = new ArrayList<Map<String, Object>>();
+            tvIpCriteriaWithBetweenValue = new ArrayList<Map<String, Object>>();
         }
 
         public List<Map<String, Object>> getSexCriteriaWithSingleValue() {
@@ -165,6 +174,51 @@ public class StudentExample {
             sexCriteriaWithBetweenValue.add(map);
         }
 
+        public List<Map<String, Object>> getTvIpCriteriaWithSingleValue() {
+            return tvIpCriteriaWithSingleValue;
+        }
+
+        public List<Map<String, Object>> getTvIpCriteriaWithListValue() {
+            return tvIpCriteriaWithListValue;
+        }
+
+        public List<Map<String, Object>> getTvIpCriteriaWithBetweenValue() {
+            return tvIpCriteriaWithBetweenValue;
+        }
+
+        protected void addTvIpCriterion(String condition, String value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("condition", condition);
+            map.put("value", value);
+            tvIpCriteriaWithSingleValue.add(map);
+        }
+
+        protected void addTvIpCriterion(String condition, List<String> values, String property) {
+            if (values == null || values.size() == 0) {
+                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
+            }
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("condition", condition);
+            map.put("values", values);
+            tvIpCriteriaWithListValue.add(map);
+        }
+
+        protected void addTvIpCriterion(String condition, String value1, String value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            List<String> list = new ArrayList<String>();
+            list.add(value1);
+            list.add(value2);
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("condition", condition);
+            map.put("values", list);
+            tvIpCriteriaWithBetweenValue.add(map);
+        }
+
         public boolean isValid() {
             return criteriaWithoutValue.size() > 0
                 || criteriaWithSingleValue.size() > 0
@@ -172,7 +226,10 @@ public class StudentExample {
                 || criteriaWithBetweenValue.size() > 0
                 || sexCriteriaWithSingleValue.size() > 0
                 || sexCriteriaWithListValue.size() > 0
-                || sexCriteriaWithBetweenValue.size() > 0;
+                || sexCriteriaWithBetweenValue.size() > 0
+                || tvIpCriteriaWithSingleValue.size() > 0
+                || tvIpCriteriaWithListValue.size() > 0
+                || tvIpCriteriaWithBetweenValue.size() > 0;
         }
 
         public List<String> getCriteriaWithoutValue() {
@@ -704,6 +761,66 @@ public class StudentExample {
 
         public Criteria andEmailNotBetween(String value1, String value2) {
             addCriterion("EMAIL not between", value1, value2, "email");
+            return (Criteria) this;
+        }
+
+        public Criteria andTvIpIsNull() {
+            addCriterion("TV_IP is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTvIpIsNotNull() {
+            addCriterion("TV_IP is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTvIpEqualTo(String value) {
+            addTvIpCriterion("TV_IP =", value, "tvIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andTvIpNotEqualTo(String value) {
+            addTvIpCriterion("TV_IP <>", value, "tvIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andTvIpGreaterThan(String value) {
+            addTvIpCriterion("TV_IP >", value, "tvIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andTvIpGreaterThanOrEqualTo(String value) {
+            addTvIpCriterion("TV_IP >=", value, "tvIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andTvIpLessThan(String value) {
+            addTvIpCriterion("TV_IP <", value, "tvIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andTvIpLessThanOrEqualTo(String value) {
+            addTvIpCriterion("TV_IP <=", value, "tvIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andTvIpIn(List<String> values) {
+            addTvIpCriterion("TV_IP in", values, "tvIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andTvIpNotIn(List<String> values) {
+            addTvIpCriterion("TV_IP not in", values, "tvIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andTvIpBetween(String value1, String value2) {
+            addTvIpCriterion("TV_IP between", value1, value2, "tvIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andTvIpNotBetween(String value1, String value2) {
+            addTvIpCriterion("TV_IP not between", value1, value2, "tvIp");
             return (Criteria) this;
         }
     }

@@ -30,6 +30,7 @@
 <script src="static/tableExport-bootstrap-table-master/jspdf.plugin.autotable.js"></script>
 <script src="static/layer/layer.js"></script>
 <script src="static/My97DatePicker/WdatePicker.js"></script>
+<script src="static/jquery.fileDownload/jquery.fileDownload.min.js"></script>
 <script type="text/javascript" src="static/js/student/student.js">
 	
 </script>

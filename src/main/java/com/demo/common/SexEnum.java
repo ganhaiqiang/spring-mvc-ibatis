@@ -9,7 +9,7 @@ public enum SexEnum {
 		this.desc = desc;
 	}
 
-	String getDesc() {
+	public String getDesc() {
 		return desc;
 	}
 

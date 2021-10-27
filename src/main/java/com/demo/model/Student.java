@@ -20,6 +20,8 @@ public class Student implements Serializable {
 
     private String email;
 
+    private String tvIp;
+
     private static final long serialVersionUID = 1L;
 
     public BigDecimal getId() {
@@ -76,5 +78,13 @@ public class Student implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getTvIp() {
+        return tvIp;
+    }
+
+    public void setTvIp(String tvIp) {
+        this.tvIp = tvIp;
     }
 }

@@ -9,6 +9,7 @@
     <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
     <result column="BIRTHDAY" property="birthday" jdbcType="TIMESTAMP" />
     <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="TV_IP" property="tvIp" jdbcType="DECIMAL" typeHandler="com.demo.common.IpTypeHandler" />
   </resultMap>
   
   <sql id="STUDENT.Pagination_Head" >
@@ -66,13 +67,27 @@
           #oredCriteria[].sexCriteriaWithBetweenValue[].values[0],handler=com.demo.common.SexEnumTypeHandler# and
           #oredCriteria[].sexCriteriaWithBetweenValue[].values[1],handler=com.demo.common.SexEnumTypeHandler#
         </iterate>
+        <iterate prepend="and" property="oredCriteria[].tvIpCriteriaWithSingleValue" conjunction="and" >
+          $oredCriteria[].tvIpCriteriaWithSingleValue[].condition$ #oredCriteria[].tvIpCriteriaWithSingleValue[].value,handler=com.demo.common.IpTypeHandler#
+        </iterate>
+        <iterate prepend="and" property="oredCriteria[].tvIpCriteriaWithListValue" conjunction="and" >
+          $oredCriteria[].tvIpCriteriaWithListValue[].condition$
+          <iterate property="oredCriteria[].tvIpCriteriaWithListValue[].values" open="(" close=")" conjunction="," >
+            #oredCriteria[].tvIpCriteriaWithListValue[].values[],handler=com.demo.common.IpTypeHandler#
+          </iterate>
+        </iterate>
+        <iterate prepend="and" property="oredCriteria[].tvIpCriteriaWithBetweenValue" conjunction="and" >
+          $oredCriteria[].tvIpCriteriaWithBetweenValue[].condition$
+          #oredCriteria[].tvIpCriteriaWithBetweenValue[].values[0],handler=com.demo.common.IpTypeHandler# and
+          #oredCriteria[].tvIpCriteriaWithBetweenValue[].values[1],handler=com.demo.common.IpTypeHandler#
+        </iterate>
         )
       </isEqual>
     </iterate>
   </sql>
   
   <sql id="STUDENT.Base_Column_List" >
-    ID, NAME, SEX, AGE, ADDRESS, BIRTHDAY, EMAIL
+    ID, NAME, SEX, AGE, ADDRESS, BIRTHDAY, EMAIL, TV_IP
   </sql>
   
   <select id="STUDENT.selectByExample" resultMap="BaseResultMap" parameterClass="com.demo.model.StudentExample" >
@@ -113,17 +128,19 @@
   
   <insert id="STUDENT.insert" parameterClass="com.demo.model.Student" >
     <selectKey resultClass="java.math.BigDecimal" keyProperty="id" >
-      SELECT SEQ_STUDENT.NEXTVAL FROM DUAL AS id
+      SELECT SEQ_STUDENT.NEXTVAL FROM DUAL
     </selectKey>
     insert into STUDENT (ID, NAME, SEX, 
-      AGE, ADDRESS, BIRTHDAY, EMAIL)
+      AGE, ADDRESS, BIRTHDAY, EMAIL, TV_IP
+      )
     values (#id:DECIMAL#, #name:VARCHAR#, #sex,jdbcType=VARCHAR,handler=com.demo.common.SexEnumTypeHandler#, 
-      #age:DECIMAL#, #address:VARCHAR#, #birthday:TIMESTAMP#, #email:VARCHAR#)
+      #age:DECIMAL#, #address:VARCHAR#, #birthday:TIMESTAMP#, #email:VARCHAR#, #tvIp,jdbcType=DECIMAL,handler=com.demo.common.IpTypeHandler#
+      )
   </insert>
   
   <insert id="STUDENT.insertSelective" parameterClass="com.demo.model.Student" >
     <selectKey resultClass="java.math.BigDecimal" keyProperty="id" >
-      SELECT SEQ_STUDENT.NEXTVAL FROM DUAL AS id
+      SELECT SEQ_STUDENT.NEXTVAL FROM DUAL
     </selectKey>
     insert into STUDENT
     <dynamic prepend="(" >
@@ -147,6 +164,9 @@
       </isNotNull>
       <isNotNull prepend="," property="email" >
         EMAIL
+      </isNotNull>
+      <isNotNull prepend="," property="tvIp" >
+        TV_IP
       </isNotNull>
       )
     </dynamic>
@@ -172,6 +192,9 @@
       </isNotNull>
       <isNotNull prepend="," property="email" >
         #email:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="tvIp" >
+        #tvIp,jdbcType=DECIMAL,handler=com.demo.common.IpTypeHandler#
       </isNotNull>
       )
     </dynamic>
@@ -206,6 +229,9 @@
       <isNotNull prepend="," property="record.email" >
         EMAIL = #record.email:VARCHAR#
       </isNotNull>
+      <isNotNull prepend="," property="record.tvIp" >
+        TV_IP = #record.tvIp,jdbcType=DECIMAL,handler=com.demo.common.IpTypeHandler#
+      </isNotNull>
     </dynamic>
     <isParameterPresent >
       <include refid="STUDENT.Example_Where_Clause" />
@@ -220,7 +246,8 @@
       AGE = #record.age:DECIMAL#,
       ADDRESS = #record.address:VARCHAR#,
       BIRTHDAY = #record.birthday:TIMESTAMP#,
-      EMAIL = #record.email:VARCHAR#
+      EMAIL = #record.email:VARCHAR#,
+      TV_IP = #record.tvIp,jdbcType=DECIMAL,handler=com.demo.common.IpTypeHandler#
     <isParameterPresent >
       <include refid="STUDENT.Example_Where_Clause" />
     </isParameterPresent>
@@ -247,6 +274,9 @@
       <isNotNull prepend="," property="email" >
         EMAIL = #email:VARCHAR#
       </isNotNull>
+      <isNotNull prepend="," property="tvIp" >
+        TV_IP = #tvIp,jdbcType=DECIMAL,handler=com.demo.common.IpTypeHandler#
+      </isNotNull>
     </dynamic>
     where ID = #id:DECIMAL#
   </update>
@@ -258,7 +288,8 @@
       AGE = #age:DECIMAL#,
       ADDRESS = #address:VARCHAR#,
       BIRTHDAY = #birthday:TIMESTAMP#,
-      EMAIL = #email:VARCHAR#
+      EMAIL = #email:VARCHAR#,
+      TV_IP = #tvIp,jdbcType=DECIMAL,handler=com.demo.common.IpTypeHandler#
     where ID = #id:DECIMAL#
   </update>
   

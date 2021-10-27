@@ -1,5 +1,6 @@
 package com.demo.common;
 
+import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,46 +8,46 @@ import java.sql.SQLException;
 
 import com.ibatis.sqlmap.engine.type.TypeHandler;
 
-public class SexEnumTypeHandler implements TypeHandler {
+public class IpTypeHandler implements TypeHandler {
 
 	@Override
 	public void setParameter(PreparedStatement ps, int i, Object parameter, String jdbcType) throws SQLException {
-		ps.setString(i, ((SexEnum) parameter).name());
+		ps.setLong(i, IpConverter.inet_aton(parameter.toString()));
 	}
 
 	@Override
 	public Object getResult(ResultSet rs, String columnName) throws SQLException {
-		Object s = rs.getString(columnName);
+		BigDecimal s = rs.getBigDecimal(columnName);
 		if (rs.wasNull()) {
 			return null;
 		} else {
-			return SexEnum.valueOf((String) s);
+			return IpConverter.inet_ntoa(s.longValue());
 		}
 	}
 
 	@Override
 	public Object getResult(ResultSet rs, int columnIndex) throws SQLException {
-		Object s = rs.getString(columnIndex);
+		BigDecimal s = rs.getBigDecimal(columnIndex);
 		if (rs.wasNull()) {
 			return null;
 		} else {
-			return SexEnum.valueOf((String) s);
+			return IpConverter.inet_ntoa(s.longValue());
 		}
 	}
 
 	@Override
 	public Object getResult(CallableStatement cs, int columnIndex) throws SQLException {
-		Object s = cs.getString(columnIndex);
+		BigDecimal s = cs.getBigDecimal(columnIndex);
 		if (cs.wasNull()) {
 			return null;
 		} else {
-			return SexEnum.valueOf((String) s);
+			return IpConverter.inet_ntoa(s.longValue());
 		}
 	}
 
 	@Override
 	public Object valueOf(String s) {
-		return SexEnum.valueOf(s);
+		return String.valueOf(s);
 	}
 
 	@Override
