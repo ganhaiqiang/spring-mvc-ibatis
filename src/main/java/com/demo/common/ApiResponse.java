@@ -32,7 +32,7 @@ public class ApiResponse extends JSONObject {
 		return response;
 	}
 
-	public static ApiResponse ok(Map<String, Object> map) {
+	public static ApiResponse put(Map<String, Object> map) {
 		ApiResponse response = new ApiResponse();
 		response.putAll(map);
 		return response;

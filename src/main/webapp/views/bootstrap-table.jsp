@@ -58,8 +58,8 @@
 						<label for="sex"> 性别 </label>
 						<select class="selectpicker" data-live-search="true" id="sex" name="sex" title="请选择性别" >
 							<option value=""></option>
-							<option value="F">男</option>
-							<option value="M">女</option>
+							<option value="MALE">男</option>
+							<option value="FEMALE">女</option>
 						</select>
 
 						<label for="age"> 年龄 </label>

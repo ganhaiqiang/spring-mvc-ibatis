@@ -11,7 +11,7 @@ public class SexEnumTypeHandler implements TypeHandler {
 
 	@Override
 	public void setParameter(PreparedStatement ps, int i, Object parameter, String jdbcType) throws SQLException {
-		ps.setString(i, ((SexEnum) parameter).name());
+		ps.setString(i, ((SexEnum) parameter).getCode());
 	}
 
 	@Override
@@ -20,7 +20,7 @@ public class SexEnumTypeHandler implements TypeHandler {
 		if (rs.wasNull()) {
 			return null;
 		} else {
-			return SexEnum.valueOf((String) s);
+			return SexEnum.parse((String) s);
 		}
 	}
 
@@ -30,7 +30,7 @@ public class SexEnumTypeHandler implements TypeHandler {
 		if (rs.wasNull()) {
 			return null;
 		} else {
-			return SexEnum.valueOf((String) s);
+			return SexEnum.parse((String) s);
 		}
 	}
 
@@ -40,13 +40,13 @@ public class SexEnumTypeHandler implements TypeHandler {
 		if (cs.wasNull()) {
 			return null;
 		} else {
-			return SexEnum.valueOf((String) s);
+			return SexEnum.parse((String) s);
 		}
 	}
 
 	@Override
 	public Object valueOf(String s) {
-		return SexEnum.valueOf(s);
+		return SexEnum.parse(s);
 	}
 
 	@Override

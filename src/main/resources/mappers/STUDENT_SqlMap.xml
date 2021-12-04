@@ -1,38 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
-<sqlMap namespace="STUDENT" >
+<sqlMap namespace="student" >
   <resultMap id="BaseResultMap" class="com.demo.model.Student" >
-    <result column="ID" property="id" jdbcType="DECIMAL" />
-    <result column="NAME" property="name" jdbcType="VARCHAR" />
-    <result column="SEX" property="sex" jdbcType="VARCHAR" typeHandler="com.demo.common.SexEnumTypeHandler" />
-    <result column="AGE" property="age" jdbcType="DECIMAL" />
-    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
-    <result column="BIRTHDAY" property="birthday" jdbcType="TIMESTAMP" />
-    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
-    <result column="TV_IP" property="tvIp" jdbcType="DECIMAL" typeHandler="com.demo.common.IpTypeHandler" />
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" typeHandler="com.demo.common.SexEnumTypeHandler" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
   </resultMap>
   
-  <sql id="STUDENT.Pagination_Head" >
+  <sql id="student.Pagination_Limit" >
     <dynamic >
-      <isNotEmpty property="firstResult" >
-        <isNotEmpty property="lastResult" >
-          <![CDATA[select * from ( select row_.*, rownum rownum_ from ( ]]>
+      <isNotEmpty property="offset" >
+        <isNotEmpty property="limit" >
+          <![CDATA[ limit #offset# , #limit# ]]>
         </isNotEmpty>
       </isNotEmpty>
     </dynamic>
   </sql>
   
-  <sql id="STUDENT.Pagination_Tail" >
-    <dynamic >
-      <isNotEmpty property="firstResult" >
-        <isNotEmpty property="lastResult" >
-          <![CDATA[) row_ where rownum <= #lastResult# ) where rownum_ > #firstResult#]]>
-        </isNotEmpty>
-      </isNotEmpty>
-    </dynamic>
-  </sql>
-  
-  <sql id="STUDENT.Example_Where_Clause" >
+  <sql id="student.Example_Where_Clause" >
     <iterate property="oredCriteria" conjunction="or" prepend="where" removeFirstPrepend="iterate" >
       <isEqual property="oredCriteria[].valid" compareValue="true" >
         (
@@ -67,114 +56,85 @@
           #oredCriteria[].sexCriteriaWithBetweenValue[].values[0],handler=com.demo.common.SexEnumTypeHandler# and
           #oredCriteria[].sexCriteriaWithBetweenValue[].values[1],handler=com.demo.common.SexEnumTypeHandler#
         </iterate>
-        <iterate prepend="and" property="oredCriteria[].tvIpCriteriaWithSingleValue" conjunction="and" >
-          $oredCriteria[].tvIpCriteriaWithSingleValue[].condition$ #oredCriteria[].tvIpCriteriaWithSingleValue[].value,handler=com.demo.common.IpTypeHandler#
-        </iterate>
-        <iterate prepend="and" property="oredCriteria[].tvIpCriteriaWithListValue" conjunction="and" >
-          $oredCriteria[].tvIpCriteriaWithListValue[].condition$
-          <iterate property="oredCriteria[].tvIpCriteriaWithListValue[].values" open="(" close=")" conjunction="," >
-            #oredCriteria[].tvIpCriteriaWithListValue[].values[],handler=com.demo.common.IpTypeHandler#
-          </iterate>
-        </iterate>
-        <iterate prepend="and" property="oredCriteria[].tvIpCriteriaWithBetweenValue" conjunction="and" >
-          $oredCriteria[].tvIpCriteriaWithBetweenValue[].condition$
-          #oredCriteria[].tvIpCriteriaWithBetweenValue[].values[0],handler=com.demo.common.IpTypeHandler# and
-          #oredCriteria[].tvIpCriteriaWithBetweenValue[].values[1],handler=com.demo.common.IpTypeHandler#
-        </iterate>
         )
       </isEqual>
     </iterate>
   </sql>
   
-  <sql id="STUDENT.Base_Column_List" >
-    ID, NAME, SEX, AGE, ADDRESS, BIRTHDAY, EMAIL, TV_IP
+  <sql id="student.Base_Column_List" >
+    id, name, sex, age, address, birthday, email
   </sql>
   
-  <select id="STUDENT.selectByExample" resultMap="BaseResultMap" parameterClass="com.demo.model.StudentExample" >
-    <include refid="STUDENT.Pagination_Head" />
+  <select id="student.selectByExample" resultMap="BaseResultMap" parameterClass="com.demo.model.StudentExample" >
     select
     <isParameterPresent >
       <isEqual property="distinct" compareValue="true" >
         distinct
       </isEqual>
     </isParameterPresent>
-    <include refid="STUDENT.Base_Column_List" />
-    from STUDENT
+    <include refid="student.Base_Column_List" />
+    from student
     <isParameterPresent >
-      <include refid="STUDENT.Example_Where_Clause" />
+      <include refid="student.Example_Where_Clause" />
       <isNotNull property="orderByClause" >
         order by $orderByClause$
       </isNotNull>
     </isParameterPresent>
-    <include refid="STUDENT.Pagination_Tail" />
+    <include refid="student.Pagination_Limit" />
   </select>
   
-  <select id="STUDENT.selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.demo.model.Student" >
+  <select id="student.selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.demo.model.Student" >
     select 
-    <include refid="STUDENT.Base_Column_List" />
-    from STUDENT
-    where ID = #id:DECIMAL#
+    <include refid="student.Base_Column_List" />
+    from student
+    where id = #id:INTEGER#
   </select>
   
-  <delete id="STUDENT.deleteByPrimaryKey" parameterClass="com.demo.model.Student" >
-    delete from STUDENT
-    where ID = #id:DECIMAL#
+  <delete id="student.deleteByPrimaryKey" parameterClass="com.demo.model.Student" >
+    delete from student
+    where id = #id:INTEGER#
   </delete>
   
-  <delete id="STUDENT.deleteByExample" parameterClass="com.demo.model.StudentExample" >
-    delete from STUDENT
-    <include refid="STUDENT.Example_Where_Clause" />
+  <delete id="student.deleteByExample" parameterClass="com.demo.model.StudentExample" >
+    delete from student
+    <include refid="student.Example_Where_Clause" />
   </delete>
   
-  <insert id="STUDENT.insert" parameterClass="com.demo.model.Student" >
-    <selectKey resultClass="java.math.BigDecimal" keyProperty="id" >
-      SELECT SEQ_STUDENT.NEXTVAL FROM DUAL
+  <insert id="student.insert" parameterClass="com.demo.model.Student" >
+    insert into student (name, sex, 
+      age, address, birthday, email)
+    values (#name:VARCHAR#, #sex,jdbcType=VARCHAR,handler=com.demo.common.SexEnumTypeHandler#, 
+      #age:INTEGER#, #address:VARCHAR#, #birthday:DATE#, #email:VARCHAR#)
+    <selectKey resultClass="java.lang.Integer" keyProperty="id" >
+      SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into STUDENT (ID, NAME, SEX, 
-      AGE, ADDRESS, BIRTHDAY, EMAIL, TV_IP
-      )
-    values (#id:DECIMAL#, #name:VARCHAR#, #sex,jdbcType=VARCHAR,handler=com.demo.common.SexEnumTypeHandler#, 
-      #age:DECIMAL#, #address:VARCHAR#, #birthday:TIMESTAMP#, #email:VARCHAR#, #tvIp,jdbcType=DECIMAL,handler=com.demo.common.IpTypeHandler#
-      )
   </insert>
   
-  <insert id="STUDENT.insertSelective" parameterClass="com.demo.model.Student" >
-    <selectKey resultClass="java.math.BigDecimal" keyProperty="id" >
-      SELECT SEQ_STUDENT.NEXTVAL FROM DUAL
-    </selectKey>
-    insert into STUDENT
+  <insert id="student.insertSelective" parameterClass="com.demo.model.Student" >
+    insert into student
     <dynamic prepend="(" >
-      <isNotNull prepend="," property="id" >
-        ID
-      </isNotNull>
       <isNotNull prepend="," property="name" >
-        NAME
+        name
       </isNotNull>
       <isNotNull prepend="," property="sex" >
-        SEX
+        sex
       </isNotNull>
       <isNotNull prepend="," property="age" >
-        AGE
+        age
       </isNotNull>
       <isNotNull prepend="," property="address" >
-        ADDRESS
+        address
       </isNotNull>
       <isNotNull prepend="," property="birthday" >
-        BIRTHDAY
+        birthday
       </isNotNull>
       <isNotNull prepend="," property="email" >
-        EMAIL
-      </isNotNull>
-      <isNotNull prepend="," property="tvIp" >
-        TV_IP
+        email
       </isNotNull>
       )
     </dynamic>
     values
     <dynamic prepend="(" >
-      <isNotNull prepend="," property="id" >
-        #id:DECIMAL#
-      </isNotNull>
       <isNotNull prepend="," property="name" >
         #name:VARCHAR#
       </isNotNull>
@@ -182,115 +142,108 @@
         #sex,jdbcType=VARCHAR,handler=com.demo.common.SexEnumTypeHandler#
       </isNotNull>
       <isNotNull prepend="," property="age" >
-        #age:DECIMAL#
+        #age:INTEGER#
       </isNotNull>
       <isNotNull prepend="," property="address" >
         #address:VARCHAR#
       </isNotNull>
       <isNotNull prepend="," property="birthday" >
-        #birthday:TIMESTAMP#
+        #birthday:DATE#
       </isNotNull>
       <isNotNull prepend="," property="email" >
         #email:VARCHAR#
       </isNotNull>
-      <isNotNull prepend="," property="tvIp" >
-        #tvIp,jdbcType=DECIMAL,handler=com.demo.common.IpTypeHandler#
-      </isNotNull>
       )
     </dynamic>
+    <selectKey resultClass="java.lang.Integer" keyProperty="id" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
   </insert>
   
-  <select id="STUDENT.countByExample" parameterClass="com.demo.model.StudentExample" resultClass="java.lang.Integer" >
-    select count(*) from STUDENT
-    <include refid="STUDENT.Example_Where_Clause" />
+  <select id="student.countByExample" parameterClass="com.demo.model.StudentExample" resultClass="java.lang.Integer" >
+    select count(*) from student
+    <include refid="student.Example_Where_Clause" />
   </select>
   
-  <update id="STUDENT.updateByExampleSelective" >
-    update STUDENT
+  <update id="student.updateByExampleSelective" >
+    update student
     <dynamic prepend="set" >
       <isNotNull prepend="," property="record.id" >
-        ID = #record.id:DECIMAL#
+        id = #record.id:INTEGER#
       </isNotNull>
       <isNotNull prepend="," property="record.name" >
-        NAME = #record.name:VARCHAR#
+        name = #record.name:VARCHAR#
       </isNotNull>
       <isNotNull prepend="," property="record.sex" >
-        SEX = #record.sex,jdbcType=VARCHAR,handler=com.demo.common.SexEnumTypeHandler#
+        sex = #record.sex,jdbcType=VARCHAR,handler=com.demo.common.SexEnumTypeHandler#
       </isNotNull>
       <isNotNull prepend="," property="record.age" >
-        AGE = #record.age:DECIMAL#
+        age = #record.age:INTEGER#
       </isNotNull>
       <isNotNull prepend="," property="record.address" >
-        ADDRESS = #record.address:VARCHAR#
+        address = #record.address:VARCHAR#
       </isNotNull>
       <isNotNull prepend="," property="record.birthday" >
-        BIRTHDAY = #record.birthday:TIMESTAMP#
+        birthday = #record.birthday:DATE#
       </isNotNull>
       <isNotNull prepend="," property="record.email" >
-        EMAIL = #record.email:VARCHAR#
-      </isNotNull>
-      <isNotNull prepend="," property="record.tvIp" >
-        TV_IP = #record.tvIp,jdbcType=DECIMAL,handler=com.demo.common.IpTypeHandler#
+        email = #record.email:VARCHAR#
       </isNotNull>
     </dynamic>
     <isParameterPresent >
-      <include refid="STUDENT.Example_Where_Clause" />
+      <include refid="student.Example_Where_Clause" />
     </isParameterPresent>
   </update>
   
-  <update id="STUDENT.updateByExample" >
-    update STUDENT
-    set ID = #record.id:DECIMAL#,
-      NAME = #record.name:VARCHAR#,
-      SEX = #record.sex,jdbcType=VARCHAR,handler=com.demo.common.SexEnumTypeHandler#,
-      AGE = #record.age:DECIMAL#,
-      ADDRESS = #record.address:VARCHAR#,
-      BIRTHDAY = #record.birthday:TIMESTAMP#,
-      EMAIL = #record.email:VARCHAR#,
-      TV_IP = #record.tvIp,jdbcType=DECIMAL,handler=com.demo.common.IpTypeHandler#
+  <update id="student.updateByExample" >
+    update student
+    set id = #record.id:INTEGER#,
+      name = #record.name:VARCHAR#,
+      sex = #record.sex,jdbcType=VARCHAR,handler=com.demo.common.SexEnumTypeHandler#,
+      age = #record.age:INTEGER#,
+      address = #record.address:VARCHAR#,
+      birthday = #record.birthday:DATE#,
+      email = #record.email:VARCHAR#
     <isParameterPresent >
-      <include refid="STUDENT.Example_Where_Clause" />
+      <include refid="student.Example_Where_Clause" />
     </isParameterPresent>
   </update>
   
-  <update id="STUDENT.updateByPrimaryKeySelective" parameterClass="com.demo.model.Student" >
-    update STUDENT
+  <update id="student.updateByPrimaryKeySelective" parameterClass="com.demo.model.Student" >
+    update student
     <dynamic prepend="set" >
       <isNotNull prepend="," property="name" >
-        NAME = #name:VARCHAR#
+        name = #name:VARCHAR#
       </isNotNull>
       <isNotNull prepend="," property="sex" >
-        SEX = #sex,jdbcType=VARCHAR,handler=com.demo.common.SexEnumTypeHandler#
+        sex = #sex,jdbcType=VARCHAR,handler=com.demo.common.SexEnumTypeHandler#
       </isNotNull>
       <isNotNull prepend="," property="age" >
-        AGE = #age:DECIMAL#
+        age = #age:INTEGER#
       </isNotNull>
       <isNotNull prepend="," property="address" >
-        ADDRESS = #address:VARCHAR#
+        address = #address:VARCHAR#
       </isNotNull>
       <isNotNull prepend="," property="birthday" >
-        BIRTHDAY = #birthday:TIMESTAMP#
+        birthday = #birthday:DATE#
       </isNotNull>
       <isNotNull prepend="," property="email" >
-        EMAIL = #email:VARCHAR#
-      </isNotNull>
-      <isNotNull prepend="," property="tvIp" >
-        TV_IP = #tvIp,jdbcType=DECIMAL,handler=com.demo.common.IpTypeHandler#
+        email = #email:VARCHAR#
       </isNotNull>
     </dynamic>
-    where ID = #id:DECIMAL#
+    where id = #id:INTEGER#
   </update>
   
-  <update id="STUDENT.updateByPrimaryKey" parameterClass="com.demo.model.Student" >
-    update STUDENT
-    set NAME = #name:VARCHAR#,
-      SEX = #sex,jdbcType=VARCHAR,handler=com.demo.common.SexEnumTypeHandler#,
-      AGE = #age:DECIMAL#,
-      ADDRESS = #address:VARCHAR#,
-      BIRTHDAY = #birthday:TIMESTAMP#,
-      EMAIL = #email:VARCHAR#,
-      TV_IP = #tvIp,jdbcType=DECIMAL,handler=com.demo.common.IpTypeHandler#
-    where ID = #id:DECIMAL#
+  <update id="student.updateByPrimaryKey" parameterClass="com.demo.model.Student" >
+    update student
+    set name = #name:VARCHAR#,
+      sex = #sex,jdbcType=VARCHAR,handler=com.demo.common.SexEnumTypeHandler#,
+      age = #age:INTEGER#,
+      address = #address:VARCHAR#,
+      birthday = #birthday:DATE#,
+      email = #email:VARCHAR#
+    where id = #id:INTEGER#
   </update>
+  
   
 </sqlMap>

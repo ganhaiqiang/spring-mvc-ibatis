@@ -9,14 +9,15 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<maven.compiler.source>1.78</maven.compiler.source>
-		<maven.compiler.target>1.78</maven.compiler.target>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<spring.version>4.2.9.RELEASE</spring.version>
 		<slf4j.version>1.7.7</slf4j.version>
 		<commons.lang.version>2.6</commons.lang.version>
 		<commons.dbcp.version>1.4</commons.dbcp.version>
+		<cxf.version>3.1.12</cxf.version>
 	</properties>
 
 	<dependencies>
@@ -108,9 +109,19 @@
 			<version>${commons.dbcp.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ojdbc6</artifactId>
 			<version>11.2.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.26</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -120,7 +131,7 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.2.33</version>
+			<version>1.2.78</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
@@ -136,11 +147,33 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>easyexcel</artifactId>
 			<version>2.2.11</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxws</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>p6spy</groupId>
+			<artifactId>p6spy</artifactId>
+			<version>3.9.1</version>
 		</dependency>
 	</dependencies>
 
 	<build>
-		<finalName>MavenWebProject</finalName>
+		<finalName>spring-mvc-ibatis</finalName>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<resources>
 			<resource>
@@ -192,6 +225,50 @@
 					</webResources>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<hostName>localhost</hostName>        <!-- Default: localhost -->
+					<port>8080</port>                     <!-- 启动端口 Default:8080 -->
+					<path>/</path>   <!-- 访问应用路径 Default: /${project.artifactId} -->
+					<uriEncoding>UTF-8</uriEncoding>      <!-- uri编码 Default: ISO-8859-1 -->
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.tomcat.maven</groupId>
+						<artifactId>tomcat7-maven-plugin</artifactId>
+						<version>2.2</version>
+						<configuration>
+							<!-- 对应的 tomcat manager的接口 -->
+							<url>http://127.0.0.1:8080/manager/text</url>
+							<!-- setting.xml 的server id -->
+							<server>tomcat</server>
+							<!-- tomcat-user.xml 的 username -->
+							<!-- <username>admin</username> -->
+							<!-- tomcat-user,xml 的 password -->
+							<!-- <password>admin</password> -->
+							<!-- web项目的项目名称 -->
+							<path>/${project.artifactId}</path>
+							<uriEncoding>UTF-8</uriEncoding>
+							<!-- 若tomcat项目中已存在，且使"mvn tomcat7:deploy"命令必须要设置下面的代码 -->
+							<!-- 更新项目时，仅需要执行"mvn tomcat7:redeploy"命令即可 -->
+							<!-- 上述命令无论服务器是tomcat7、8或9，均是使用"mvn tomcat7:deploy"或"mvn tomcat7:redeploy" -->
+							<update>true</update>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

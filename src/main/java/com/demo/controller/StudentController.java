@@ -2,24 +2,22 @@ package com.demo.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.demo.common.ApiResponse;
@@ -33,11 +31,12 @@ import com.demo.service.StudentService;
 @Controller
 @RequestMapping("student")
 public class StudentController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(StudentController.class);
 
 	@Autowired
 	private StudentService studentService;
 
-	@RequestMapping(value = "down", method = RequestMethod.POST)
+	@RequestMapping("down")
 	@ResponseBody
 	public ResponseEntity<byte[]> down(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setHeader("Set-Cookie", "fileDownload=true; path=/");
@@ -46,7 +45,7 @@ public class StudentController {
 		headers.setContentDispositionFormData("attachment", DownloadUtils.processFileName(request, "spring-mvc-ibatis.rar"));
 		try {
 			Thread.sleep(5000);
-			return new ResponseEntity<byte[]>(Files.readAllBytes(new File("D:/spring-mvc-ibatis.rar").toPath()), headers, HttpStatus.OK);
+			return new ResponseEntity<byte[]>(Files.readAllBytes(new File("E:/app.png").toPath()), headers, HttpStatus.OK);
 		} catch (IOException e) {
 			headers.clear();
 			headers.setContentType(MediaType.TEXT_HTML);
@@ -54,24 +53,13 @@ public class StudentController {
 		}
 	}
 
-	@RequestMapping("test")
-	@ResponseBody
-	public Object test() {
-		List<BigDecimal> values = new ArrayList<BigDecimal>();
-		for (int i = 0; i < 1001; i++) {
-			values.add(new BigDecimal(i));
-		}
-		StudentExample example = new StudentExample();
-		example.createCriteria().andIdIn(values);
-		return studentService.selectByExample(example);
-	}
-
 	@RequestMapping("list")
 	@ResponseBody
 	public Object getStudent(Integer limit, Integer offset, String sort, String sortOrder, Student student) {
+		LOGGER.info("limit={},offset={},sort={},sortOder={}", limit, offset, sort, sortOrder);
 		StudentExample example = new StudentExample();
-		example.setFirstResult(offset);
-		example.setLastResult(offset + limit);
+		example.setLimit(limit);
+		example.setOffset(offset);
 		if (StringUtils.isNotBlank(sort) && StringUtils.isNotBlank(sortOrder)) {
 			example.setOrderByClause(sort + " " + sortOrder);
 		}
@@ -102,7 +90,7 @@ public class StudentController {
 	@ResponseBody
 	public Object accept(Student student) {
 		if (student.getId() != null) {
-			studentService.updateByPrimaryKey(student);
+			studentService.updateByPrimaryKeySelective(student);
 		} else {
 			studentService.insert(student);
 		}
@@ -111,37 +99,20 @@ public class StudentController {
 
 	@RequestMapping("findById")
 	@ResponseBody
-	public Object findById(BigDecimal id) {
+	public Object findById(Integer id) {
 		Student student = studentService.selectByPrimaryKey(id);
 		return ApiResponse.ok(student);
 	}
 
-	@RequestMapping("delete")
+	@RequestMapping("test")
 	@ResponseBody
-	public Object delete(String ids) {
-		if (StringUtils.isNotBlank(ids)) {
-			for (String id : ids.split(",")) {
-				studentService.deleteByPrimaryKey(new BigDecimal(id));
-			}
-		}
-		return ApiResponse.ok();
-	}
-
-	@RequestMapping("insert")
-	@ResponseBody
-	public Object insert() {
-//		Student student = new Student();
-//		student.setAddress("山东威海");
-//		student.setAge(new BigDecimal(32));
-//		student.setBirthday(new Date());
-//		student.setEmail("sd.dff@qq.com");
-//		student.setName("黄思维");
-//		student.setSex(SexEnum.M);
-//		student.setTvIp("192.168.55.2");
-//		System.out.println(studentService.insert(student));
-
-		StudentExample example = new StudentExample();
-		example.createCriteria().andTvIpGreaterThan("192.168.1.22");
-		return ApiResponse.ok(studentService.selectByExample(example));
+	public Object test(@RequestBody Student student) {
+//		StudentExample example = new StudentExample();
+//		example.createCriteria().andSexIn(Arrays.asList(SexEnum.FEMALE, SexEnum.MALE));
+//		List<Student> list = studentService.selectByExample(example);
+//		for (Student stu : list) {
+//			stu.setAddress("<script>alert(111);</script>");
+//		}
+		return ApiResponse.ok(student);
 	}
 }

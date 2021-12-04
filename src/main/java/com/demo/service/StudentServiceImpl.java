@@ -1,6 +1,5 @@
 package com.demo.service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +32,18 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public int deleteByPrimaryKey(BigDecimal id) {
+	public int deleteByPrimaryKey(Integer id) {
 		return studentDAO.deleteByPrimaryKey(id);
 	}
 
 	@Override
-	public BigDecimal insert(Student record) {
-		return studentDAO.insert(record);
+	public void insert(Student record) {
+		studentDAO.insert(record);
 	}
 
 	@Override
-	public BigDecimal insertSelective(Student record) {
-		return studentDAO.insertSelective(record);
+	public void insertSelective(Student record) {
+		studentDAO.insertSelective(record);
 	}
 
 	@Override
@@ -53,7 +52,7 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public Student selectByPrimaryKey(BigDecimal id) {
+	public Student selectByPrimaryKey(Integer id) {
 		return studentDAO.selectByPrimaryKey(id);
 	}
 
@@ -79,8 +78,9 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public PageInfo<Student> selectPageByExample(StudentExample example) {
-		List<Student> list = this.selectByExample(example);
-		int rows = this.countByExample(example);
-		return new PageInfo<Student>(rows, list);
+		PageInfo<Student> pageInfo = new PageInfo<Student>();
+		pageInfo.setRows(this.selectByExample(example));
+		pageInfo.setTotal(this.countByExample(example));
+		return pageInfo;
 	}
 }

@@ -6,6 +6,6 @@
 	<settings lazyLoadingEnabled="true" useStatementNamespaces="true" />
 
 	<!-- 配置sql映射文件 -->
-	<sqlMap resource="mappers/STUDENT_SqlMap.xml" />
+	<sqlMap resource="mappers/student_SqlMap.xml" />
 	<sqlMap resource="mappers/login_user_info_SqlMap.xml" />
 </sqlMapConfig>

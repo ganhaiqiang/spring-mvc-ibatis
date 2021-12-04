@@ -1,90 +1,146 @@
 package com.demo.model;
 
-import com.demo.common.SexEnum;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.demo.common.SexEnum;
+import com.demo.common.SexSerializer;
+
 public class Student implements Serializable {
-    private BigDecimal id;
+	/**
+	 * 主键
+	 */
+	private Integer id;
 
-    private String name;
+	/**
+	 * 姓名
+	 */
+	private String name;
 
-    private SexEnum sex;
+	/**
+	 * 性别
+	 */
+	@JSONField(serializeUsing = SexSerializer.class)
+	private SexEnum sex;
 
-    private BigDecimal age;
+	/**
+	 * 年龄
+	 */
+	private Integer age;
 
-    private String address;
+	/**
+	 * 家庭住址
+	 */
+	private String address;
 
-    private Date birthday;
+	/**
+	 * 生日
+	 */
+	private Date birthday;
 
-    private String email;
+	/**
+	 * 邮箱
+	 */
+	private String email;
 
-    private String tvIp;
+	private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+	/**
+	 * 获取 主键
+	 */
+	public Integer getId() {
+		return id;
+	}
 
-    public BigDecimal getId() {
-        return id;
-    }
+	/**
+	 * 设置 主键
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public void setId(BigDecimal id) {
-        this.id = id;
-    }
+	/**
+	 * 获取 姓名
+	 */
+	public String getName() {
+		return name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	/**
+	 * 设置 姓名
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	/**
+	 * 获取 性别
+	 */
+	public SexEnum getSex() {
+		return sex;
+	}
 
-    public SexEnum getSex() {
-        return sex;
-    }
+	/**
+	 * 设置 性别
+	 */
+	public void setSex(SexEnum sex) {
+		this.sex = sex;
+	}
 
-    public void setSex(SexEnum sex) {
-        this.sex = sex;
-    }
+	/**
+	 * 获取 年龄
+	 */
+	public Integer getAge() {
+		return age;
+	}
 
-    public BigDecimal getAge() {
-        return age;
-    }
+	/**
+	 * 设置 年龄
+	 */
+	public void setAge(Integer age) {
+		this.age = age;
+	}
 
-    public void setAge(BigDecimal age) {
-        this.age = age;
-    }
+	/**
+	 * 获取 家庭住址
+	 */
+	public String getAddress() {
+		return address;
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	/**
+	 * 设置 家庭住址
+	 */
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	/**
+	 * 获取 生日
+	 */
+	public Date getBirthday() {
+		return birthday;
+	}
 
-    public Date getBirthday() {
-        return birthday;
-    }
+	/**
+	 * 设置 生日
+	 */
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
+	/**
+	 * 获取 邮箱
+	 */
+	public String getEmail() {
+		return email;
+	}
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTvIp() {
-        return tvIp;
-    }
-
-    public void setTvIp(String tvIp) {
-        this.tvIp = tvIp;
-    }
+	/**
+	 * 设置 邮箱
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
 }

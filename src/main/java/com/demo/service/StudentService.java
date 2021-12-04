@@ -1,7 +1,6 @@
 package com.demo.service;
 
 import java.util.List;
-import java.math.BigDecimal;
 
 import com.demo.common.PageInfo;
 import com.demo.model.Student;
@@ -13,32 +12,28 @@ import com.demo.model.StudentExample;
  * @author mapper-generator
  */
 public interface StudentService {
-	
+
 	int countByExample(StudentExample example);
 
-    int deleteByExample(StudentExample example);
-    
-    int deleteByPrimaryKey(BigDecimal id);
+	int deleteByExample(StudentExample example);
 
-    BigDecimal insert(Student record);
+	int deleteByPrimaryKey(Integer id);
 
-    BigDecimal insertSelective(Student record);
+	void insert(Student record);
 
-    List<Student> selectByExample(StudentExample example);
-    	
-    Student selectByPrimaryKey(BigDecimal id);
- 
-    int updateByExampleSelective(Student record, StudentExample example);
+	void insertSelective(Student record);
 
-    int updateByExample(Student record, StudentExample example);
-    
-    int updateByPrimaryKeySelective(Student record);
-    
-    int updateByPrimaryKey(Student record);
+	List<Student> selectByExample(StudentExample example);
+
+	Student selectByPrimaryKey(Integer id);
+
+	int updateByExampleSelective(Student record, StudentExample example);
+
+	int updateByExample(Student record, StudentExample example);
+
+	int updateByPrimaryKeySelective(Student record);
+
+	int updateByPrimaryKey(Student record);
 
 	PageInfo<Student> selectPageByExample(StudentExample example);
 }
-
-
-
-
